@@ -6,55 +6,12 @@ var weatherApiKey = '9ae6067b6076694363fd7394d517c6a1';
 // DOM element references
 var searchForm = document.querySelector('#search-form');
 var searchInput = document.querySelector('#search-input');
-var todayContainer = document.querySelector('#today');
 var forecastContainer = document.querySelector('#forecast');
 var searchHistoryContainer = document.querySelector('#history');
 
 // Add timezone plugins to day.js
 dayjs.extend(window.dayjs_plugin_utc);
 dayjs.extend(window.dayjs_plugin_timezone);
-
-
-// Function to display the current weather data fetched from OpenWeather api.
-function renderCurrentWeather(city, weather) {
-  var date = dayjs().format('M/D/YYYY');
-  // Store response data from our fetch request in variables
-  var tempF = weather.main.temp;
-  var windMph = weather.wind.speed;
-  var humidity = weather.main.humidity;
-  var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-  var iconDescription = weather.weather[0].description || weather[0].main;
-
-  var card = document.createElement('div');
-  var cardBody = document.createElement('div');
-  var heading = document.createElement('h2');
-  var weatherIcon = document.createElement('img');
-  var tempEl = document.createElement('p');
-  var windEl = document.createElement('p');
-  var humidityEl = document.createElement('p');
-
-  card.setAttribute('class', 'card');
-  cardBody.setAttribute('class', 'card-body');
-  card.append(cardBody);
-
-  heading.setAttribute('class', 'h3 card-title');
-  tempEl.setAttribute('class', 'card-text');
-  windEl.setAttribute('class', 'card-text');
-  humidityEl.setAttribute('class', 'card-text');
-
-  heading.textContent = `${city} (${date})`;
-  weatherIcon.setAttribute('src', iconUrl);
-  weatherIcon.setAttribute('alt', iconDescription);
-  weatherIcon.setAttribute('class', 'weather-img');
-  heading.append(weatherIcon);
-  tempEl.textContent = `Temp: ${tempF}°F`;
-  windEl.textContent = `Wind: ${windMph} MPH`;
-  humidityEl.textContent = `Humidity: ${humidity} %`;
-  cardBody.append(heading, tempEl, windEl, humidityEl);
-
-  todayContainer.innerHTML = '';
-  todayContainer.append(card);
-}
 
 // Function to display a forecast card given an object from open weather api
 // daily forecast.
@@ -130,7 +87,6 @@ function renderForecast(dailyForecast) {
 }
 
 function renderItems(city, data) {
-  renderCurrentWeather(city, data.list[0], data.city.timezone);
   renderForecast(data.list);
 }
 
